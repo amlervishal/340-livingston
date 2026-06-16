@@ -60,11 +60,7 @@
     font-size:clamp(.62rem,1vw,.78rem); letter-spacing:.08em; color:var(--muted);
     text-transform:uppercase; pointer-events:none; z-index:5;
   }
-  .brand{ display:flex; align-items:center; gap:10px; color:var(--fg); }
-  .brand .mark{ width:22px; height:22px; border:1.5px solid var(--fg); border-radius:3px;
-    display:grid; place-items:center; font-size:9px; font-weight:800; letter-spacing:0; }
-  .brand b{ font-weight:800; letter-spacing:.04em; }
-  .brand span{ color:var(--muted); font-weight:500; }
+  .brand-logo{ height:clamp(15px, 1.9vw, 23px); width:auto; display:block; }
   .foot-right{ text-align:right; line-height:1.7; }
   .foot-right a{ color:var(--muted); text-decoration:none; pointer-events:auto; }
 
@@ -95,9 +91,10 @@
   @media (max-width:680px){
     .nav .chev{ display:none; }
     .cover .title{ font-size:clamp(2.4rem,11vw,4rem); }
-    .cover{ padding-bottom:clamp(116px, 20vh, 170px); }
+    .cover{ padding-bottom:clamp(64px, 11vh, 92px); }
+    .cover .meta{ margin-top:clamp(26px, 7vh, 56px); }  /* address up near title, not pinned bottom */
     .footer{ font-size:.56rem; gap:12px; }
-    .brand span{ display:none; }            /* drop tagline; keep SBJ GROUP mark */
+    .brand-logo{ height:15px; }
     .foot-right{ line-height:1.5; }
   }
 </style>
@@ -112,7 +109,7 @@
   <button class="nav next" id="navNext" aria-label="Next"><span class="chev">&#8250;</span></button>
 
   <div class="footer">
-    <div class="brand"><span class="mark">▦</span><b>SBJ&nbsp;GROUP</b><span>Architects&nbsp;&amp;&nbsp;Interior&nbsp;Designers</span></div>
+    <img class="brand-logo" src="assets/sbjg-logo.svg" alt="SBJ Group — Architects & Interior Designers" />
     <div class="foot-right">New&nbsp;York,&nbsp;NY<br><a href="https://sbjgroup.com" target="_blank" rel="noopener">sbjgroup.com</a></div>
   </div>
 
