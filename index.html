@@ -76,7 +76,9 @@
 
   /* nav arrows (desktop) */
   .nav{ position:fixed; top:0; bottom:0; width:42%; z-index:4; cursor:pointer;
-    display:flex; align-items:center; background:transparent; border:0; color:var(--fg); }
+    display:flex; align-items:center; background:transparent; border:0; color:var(--fg);
+    outline:none; -webkit-appearance:none; appearance:none; }
+  .nav:focus, .nav:focus-visible{ outline:none; box-shadow:none; }
   .nav.prev{ left:0; justify-content:flex-start; padding-left:18px; }
   .nav.next{ right:0; justify-content:flex-end; padding-right:18px; width:58%; }
   .nav .chev{ opacity:0; transition:opacity .25s var(--ease); font-size:26px; font-weight:300;
@@ -105,8 +107,8 @@
 
   <main id="stage" aria-live="polite"></main>
 
-  <button class="nav prev" id="navPrev" aria-label="Previous"><span class="chev">&#8249;</span></button>
-  <button class="nav next" id="navNext" aria-label="Next"><span class="chev">&#8250;</span></button>
+  <button class="nav prev" id="navPrev" tabindex="-1" aria-label="Previous"><span class="chev">&#8249;</span></button>
+  <button class="nav next" id="navNext" tabindex="-1" aria-label="Next"><span class="chev">&#8250;</span></button>
 
   <div class="footer">
     <img class="brand-logo" src="assets/sbjg-logo.svg" alt="SBJ Group — Architects & Interior Designers" />
@@ -192,8 +194,8 @@ addEventListener('keydown', e=>{
   else if(e.key==='End') show(TOTAL-1);
 });
 // click zones
-document.getElementById('navNext').addEventListener('click', next);
-document.getElementById('navPrev').addEventListener('click', prev);
+document.getElementById('navNext').addEventListener('click', e=>{ next(); e.currentTarget.blur(); });
+document.getElementById('navPrev').addEventListener('click', e=>{ prev(); e.currentTarget.blur(); });
 // touch swipe
 let tx=0, ty=0, tt=0;
 addEventListener('touchstart', e=>{ const t=e.changedTouches[0]; tx=t.clientX; ty=t.clientY; tt=Date.now(); }, {passive:true});
