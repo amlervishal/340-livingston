@@ -42,7 +42,7 @@
   }
 
   /* ---- cover ---- */
-  .cover{ flex-direction:column; align-items:stretch; justify-content:flex-start; padding:var(--pad); }
+  .cover{ flex-direction:column; align-items:stretch; justify-content:flex-start; padding:var(--pad); padding-bottom:clamp(104px, 17vh, 150px); }
   .cover .title{
     margin-top: clamp(24px, 7vh, 90px);
     font-weight:400; line-height:.95; letter-spacing:-.035em;
@@ -95,7 +95,10 @@
   @media (max-width:680px){
     .nav .chev{ display:none; }
     .cover .title{ font-size:clamp(2.4rem,11vw,4rem); }
-    .footer{ font-size:.58rem; }
+    .cover{ padding-bottom:clamp(116px, 20vh, 170px); }
+    .footer{ font-size:.56rem; gap:12px; }
+    .brand span{ display:none; }            /* drop tagline; keep SBJ GROUP mark */
+    .foot-right{ line-height:1.5; }
   }
 </style>
 </head>
