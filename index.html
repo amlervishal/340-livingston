@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>340 Livingston — SBJ Group</title>
+<meta name="description" content="340 Livingston, Brooklyn NY — SBJ Group Architects & Interior Designers." />
+<meta name="theme-color" content="#000000" />
+<meta property="og:title" content="340 Livingston — SBJ Group" />
+<meta property="og:description" content="Architects & Interior Designers — Brooklyn, NY." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#000; --fg:#fff; --muted:#8a8a8a; --line:#262626;
+    --pad: max(5vw, 28px);
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html,body{ height:100%; }
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:"Syne", system-ui, sans-serif;
+    overflow:hidden; user-select:none; -webkit-user-select:none;
+    overscroll-behavior:none;
+  }
+  #stage{ position:fixed; inset:0; }
+
+  /* ---- slides ---- */
+  .slide{
+    position:absolute; inset:0; opacity:0; visibility:hidden;
+    transition:opacity .6s var(--ease);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .slide.active{ opacity:1; visibility:visible; }
+
+  .slide img{
+    max-width:100%; max-height:100%;
+    width:auto; height:auto; object-fit:contain; display:block;
+    padding: clamp(16px, 4vh, 56px) clamp(16px, 4vw, 56px);
+  }
+
+  /* ---- cover ---- */
+  .cover{ flex-direction:column; align-items:stretch; justify-content:flex-start; padding:var(--pad); }
+  .cover .title{
+    margin-top: clamp(24px, 7vh, 90px);
+    font-weight:400; line-height:.95; letter-spacing:-.035em;
+    font-size:clamp(2.6rem, 8.6vw, 8.2rem);
+    max-width:16ch;
+  }
+  .cover .meta{ margin-top:auto; }
+  .cover .meta .addr{ font-weight:500; font-size:clamp(1rem,2.4vw,1.6rem); letter-spacing:-.01em; }
+  .cover .meta .date{ color:var(--muted); font-weight:400; font-size:clamp(.85rem,1.7vw,1.15rem); margin-top:.35em; }
+
+  /* footer (shared, on cover + photos) */
+  .footer{
+    position:fixed; left:var(--pad); right:var(--pad); bottom: max(4vh, 20px);
+    display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+    font-size:clamp(.62rem,1vw,.78rem); letter-spacing:.08em; color:var(--muted);
+    text-transform:uppercase; pointer-events:none; z-index:5;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; color:var(--fg); }
+  .brand .mark{ width:22px; height:22px; border:1.5px solid var(--fg); border-radius:3px;
+    display:grid; place-items:center; font-size:9px; font-weight:800; letter-spacing:0; }
+  .brand b{ font-weight:800; letter-spacing:.04em; }
+  .brand span{ color:var(--muted); font-weight:500; }
+  .foot-right{ text-align:right; line-height:1.7; }
+  .foot-right a{ color:var(--muted); text-decoration:none; pointer-events:auto; }
+
+  /* counter + progress */
+  .counter{
+    position:fixed; right:var(--pad); top: max(4vh, 20px);
+    font-variant-numeric:tabular-nums; font-weight:600; letter-spacing:.12em;
+    font-size:clamp(.7rem,1.1vw,.85rem); color:var(--fg); z-index:6;
+  }
+  .counter .tot{ color:var(--muted); }
+  .progress{ position:fixed; top:0; left:0; height:2px; background:var(--fg); width:0;
+    transition:width .5s var(--ease); z-index:7; }
+
+  /* nav arrows (desktop) */
+  .nav{ position:fixed; top:0; bottom:0; width:42%; z-index:4; cursor:pointer;
+    display:flex; align-items:center; background:transparent; border:0; color:var(--fg); }
+  .nav.prev{ left:0; justify-content:flex-start; padding-left:18px; }
+  .nav.next{ right:0; justify-content:flex-end; padding-right:18px; width:58%; }
+  .nav .chev{ opacity:0; transition:opacity .25s var(--ease); font-size:26px; font-weight:300;
+    width:46px; height:46px; display:grid; place-items:center; border-radius:50%;
+    background:rgba(255,255,255,.06); }
+  @media (hover:hover){ .nav:hover .chev{ opacity:.7; } }
+
+  .hint{ position:fixed; left:50%; bottom: max(9vh, 64px); transform:translateX(-50%);
+    color:var(--muted); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase;
+    z-index:6; transition:opacity .6s var(--ease); pointer-events:none; }
+
+  @media (max-width:680px){
+    .nav .chev{ display:none; }
+    .cover .title{ font-size:clamp(2.4rem,11vw,4rem); }
+    .footer{ font-size:.58rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <div class="counter" id="counter"></div>
+
+  <main id="stage" aria-live="polite"></main>
+
+  <button class="nav prev" id="navPrev" aria-label="Previous"><span class="chev">&#8249;</span></button>
+  <button class="nav next" id="navNext" aria-label="Next"><span class="chev">&#8250;</span></button>
+
+  <div class="footer">
+    <div class="brand"><span class="mark">▦</span><b>SBJ&nbsp;GROUP</b><span>Architects&nbsp;&amp;&nbsp;Interior&nbsp;Designers</span></div>
+    <div class="foot-right">New&nbsp;York,&nbsp;NY<br><a href="https://sbjgroup.com" target="_blank" rel="noopener">sbjgroup.com</a></div>
+  </div>
+
+  <div class="hint" id="hint">Tap / arrow keys / swipe</div>
+
+<script>
+const IMAGES = [
+  "fork-brick-01.jpg","fork-brick-ref-02.jpg","fork-brick-ref-14.jpg","fork-charcoal.jpg",
+  "fork-cream.jpg","fork-grey-brown.jpg","fork-light-brick.jpg","fork-lightgrey.jpg",
+  "crown-darkmp.jpg","fork-crown-charcoal-1.jpg","fork-crown-charcoal-2.jpg",
+  "fork-crown-lightbrick-1.jpg","fork-crown-lightbrick-2.jpg","fork-crown-lightgrey-1.jpg",
+  "fork-crown-lightgrey-2.jpg","fork-crown-midgrey-1.jpg","fork-crown-midgrey-2.jpg",
+  "fork-crown-ref12-1.jpg","fork-crown-ref12-2.jpg","fork-crown-ribbed-1.jpg",
+  "fork-crown-ribbed-2.jpg","fork-crown-slate-1.jpg","fork-crown-tan-1.jpg",
+  "fork-crown-tan-2.jpg","A-mit-3.jpg","livingston-brick-010-dusk-2.jpg",
+  "livingston-brick-02-dusk-1.jpg","livingston-brick-02-dusk-2.jpg",
+  "livingston-brick-02-dusk-3.jpg","livingston-dusk-1.jpg"
+];
+
+const stage = document.getElementById('stage');
+const counter = document.getElementById('counter');
+const progress = document.getElementById('progress');
+const hint = document.getElementById('hint');
+
+// Build slides: 0 = cover, then one per image.
+const slideEls = [];
+
+const cover = document.createElement('section');
+cover.className = 'slide cover active';
+cover.innerHTML = `
+  <h1 class="title">SBJ Group<br>Architects &amp;<br>Interior Designers</h1>
+  <div class="meta">
+    <div class="addr">340 Livingston | Brooklyn, NY</div>
+    <div class="date">2026.06</div>
+  </div>`;
+stage.appendChild(cover);
+slideEls.push(cover);
+
+IMAGES.forEach((src, i) => {
+  const s = document.createElement('section');
+  s.className = 'slide';
+  const img = document.createElement('img');
+  img.alt = `340 Livingston — view ${i+1}`;
+  img.dataset.src = 'images/' + src;
+  s.appendChild(img);
+  stage.appendChild(s);
+  slideEls.push(s);
+});
+
+const TOTAL = slideEls.length;       // cover + images
+let idx = 0;
+
+function load(i){
+  if(i<0 || i>=TOTAL) return;
+  const img = slideEls[i].querySelector('img');
+  if(img && !img.src && img.dataset.src) img.src = img.dataset.src;
+}
+function show(i){
+  i = (i + TOTAL) % TOTAL;
+  slideEls[idx].classList.remove('active');
+  idx = i;
+  load(idx); load(idx+1); load(idx-1);     // current + neighbours
+  slideEls[idx].classList.add('active');
+  // counter: blank on cover, NN / NN on photos
+  if(idx===0){ counter.innerHTML=''; }
+  else{
+    const n=String(idx).padStart(2,'0'), t=String(TOTAL-1).padStart(2,'0');
+    counter.innerHTML = `${n} <span class="tot">/ ${t}</span>`;
+  }
+  progress.style.width = (idx/(TOTAL-1))*100 + '%';
+  if(idx>0 && hint){ hint.style.opacity='0'; }
+}
+const next=()=>show(idx+1), prev=()=>show(idx-1);
+
+// keyboard
+addEventListener('keydown', e=>{
+  if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){ e.preventDefault(); next(); }
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); prev(); }
+  else if(e.key==='Home') show(0);
+  else if(e.key==='End') show(TOTAL-1);
+});
+// click zones
+document.getElementById('navNext').addEventListener('click', next);
+document.getElementById('navPrev').addEventListener('click', prev);
+// touch swipe
+let tx=0, ty=0, tt=0;
+addEventListener('touchstart', e=>{ const t=e.changedTouches[0]; tx=t.clientX; ty=t.clientY; tt=Date.now(); }, {passive:true});
+addEventListener('touchend', e=>{
+  const t=e.changedTouches[0], dx=t.clientX-tx, dy=t.clientY-ty;
+  if(Math.abs(dx)>40 && Math.abs(dx)>Math.abs(dy)){ dx<0 ? next() : prev(); }
+}, {passive:true});
+
+show(0);
+</script>
+</body>
+</html>
